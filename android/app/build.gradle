@@ -1,0 +1,24 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 33
+    buildToolsVersion '32.0.0'
+    defaultConfig {
+        applicationId 'com.worldpeace.committee'
+        minSdkVersion 29
+        targetSdkVersion 33
+        versionCode 1
+        versionName '0.6.0-opensource'
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    sourceSets.main.assets.srcDir(layout.buildDirectory.dir('bundled-assets'))
+}
+
+def assets = tasks.register('syncGameAssets', Sync) {
+    into layout.buildDirectory.dir('bundled-assets')
+    from('../../dist') { into 'game' }
+}
+preBuild.dependsOn assets

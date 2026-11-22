@@ -1,0 +1,15 @@
+import {map} from './atlas.js';
+import { COUNTRIES } from './data.js';
+import {LEADER_IMAGES} from './leader-assets.js';
+const escapeVisual=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const paths={settings:'M9 3h6l1 3 3 1 2 5-2 5-3 1-1 3H9l-1-3-3-1-2-5 2-5 3-1 1-3ZM16 12a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z',world:'M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0ZM3 12h18M12 3c-5 5-5 13 0 18M12 3c5 5 5 13 0 18',events:'M6 3h12v18H6zM9 7h6M9 11h6M9 15h4',council:'M3 9l9-6 9 6H3Zm2 2v7m5-7v7m4-7v7m5-7v7M3 21h18',committee:'M7 7V4h10v3M3 7h18v14H3zM3 12h18M10 11v3h4v-3',arrow:'M4 12h16m-6-6 6 6-6 6',close:'m6 6 12 12M6 18 18 6',help:'M9 9a3 3 0 1 1 5 2c-2 1-2 2-2 3m0 3h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z',check:'m5 12 4 4L19 6',clock:'M12 6v6l4 2M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z',chevron:'m9 5 7 7-7 7',download:'M12 3v12m-5-5 5 5 5-5M4 16v5h16v-5',reset:'M4 10a8 8 0 1 1 1 8M4 4v6h6',coin:'M20 8c0 3-16 3-16 0s16-3 16 0ZM4 8v9c0 3 16 3 16 0V8M4 12c0 3 16 3 16 0',spark:'m12 3 2 6 7 3-7 2-2 7-2-7-7-2 7-3 2-6',shield:'m12 3 8 3v6c0 5-8 9-8 9s-8-4-8-9V6l8-3',plus:'M12 4v16M4 12h16',flag:'M5 21V3m0 1h14l-3 4 3 4H5',file:'M6 3h8l4 4v14H6V3Zm8 0v5h4M9 12h6M9 16h6'};
+const icon=(name,cls='')=>`<svg class="icon ${cls}" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="${paths[name]||paths.file}"/></svg>`;
+function portrait(c,size=''){
+ return `<img class="portrait leader-avatar ${size}" src="${LEADER_IMAGES[c.id]}" alt="${escapeVisual(c.leader)}肖像" width="100" height="108">`;
+}
+function fallbackPortrait(c,size=''){
+ const idx=COUNTRIES.indexOf(c),female=['FENG','HUI','CHENG'].includes(c.id);
+ return `<svg class="portrait ${size}" viewBox="0 0 100 108" role="img" aria-label="${escapeVisual(c.leader)}肖像"><rect width="100" height="108" rx="8" fill="${c.color}18"/><circle cx="50" cy="45" r="32" fill="${c.color}0f"/><path d="M10 108v-8q4-24 29-28h22q25 4 29 28v8" fill="${c.color}" opacity=".65"/><path d="m39 70 11 17 11-17v-9H39" fill="#bf9a80"/><path d="M31 34q0-21 20-21 21 0 21 24v16q-4 19-21 20-18-2-21-20Z" fill="#d4b49a"/><path d="M29 46V32Q29 9 52 10q24 0 23 27l-8 9-2-21q-12 10-29 7l1 14Z" fill="${idx===0||idx===6?'#66716f':'#323535'}"/>${female?'<path d="M29 39q-5 30-1 41l12-7-9-20m43-14q7 25 0 41l-12-7 9-20" fill="#323535"/>':''}<path d="M38 45h7m11 0h7" stroke="#4b453f" stroke-width="2"/><path d="m50 47-2 9h5m-9 6q7 4 14-1" fill="none" stroke="#9c7560" stroke-width="1.4"/><path d="m34 76 16 11-8 12-10-20m34-3L50 87l8 12 10-20" fill="#12242a" opacity=".8"/><path d="M50 88v20" stroke="#d4bf98" opacity=".5"/>${idx===0?'<path d="M35 42h13v9H35zm18 0h13v9H53zm-5 4h5" fill="none" stroke="#5b6462"/>':''}<circle cx="75" cy="90" r="3" fill="#dfc48b"/></svg>`;
+}
+const flag=c=>`<span class="flag" style="--country:${c.color}" title="${c.name}"><span>${c.id==='XING'?'✦':c.id==='CHI'?'▲':c.id==='FENG'?'❋':c.id==='CHENG'?'≈':c.id==='LAN'?'◇':c.id==='HUI'?'◆':'☀'}</span></span>`;
+export {icon,portrait,flag,map};

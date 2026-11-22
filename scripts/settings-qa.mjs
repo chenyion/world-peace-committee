@@ -1,0 +1,50 @@
+import {createGame} from '../dist/engine.js';
+import {EVENTS,COUNTRIES} from '../dist/data.js';
+
+export async function settingsChecks(api){
+ const {send,evaluate,click,layout,loadState,saved,close,screenshot,wait,assert,openEvent}=api;
+ await close();await evaluate(`localStorage.removeItem('peace-committee-paused-v1');for(const id of ['1','2','3','backup'])localStorage.removeItem('peace-committee-slot-'+id+'-v1')`);await loadState(createGame(1001));
+ const settings=async(section='preferences',slot='1')=>{await close();await click('header [data-action="settings"]');if(section==='slots')await click(`[data-action="settings"][data-section="slots"]`);if(slot!=='1')await click(`[data-slot="${slot}"]`);};
+ for(const [width,height] of [[320,568],[360,640],[390,844],[430,932]]){
+  await send('Emulation.setDeviceMetricsOverride',{width,height,deviceScaleFactor:1,mobile:true});await wait(180);
+  for(const font of ['normal','large','extra']){
+   await settings();await click(`[data-action="font-size"][data-font="${font}"]`);await layout(`settings ${font} ${width}`);
+   if(font==='extra')await screenshot(`settings-${width}`);
+   await click('[data-action="settings"][data-section="slots"]');await layout('save slots '+font);await close();
+   for(const tab of ['world','events','council','committee']){await click(`[data-action="tab"][data-tab="${tab}"]`);await layout('font '+font+' '+tab);}
+   await click('[data-action="tab"][data-tab="world"]');await click('[data-action="roster"]');await layout('font roster '+font);await click('[data-action="country"][data-id="YAO"]');
+   for(const section of ['diplomacy','profile','vote']){await click(`[data-action="country-section"][data-section="${section}"]`);await layout('font country '+section+' '+font);}
+   await close();await openEvent('MIR-01');await layout('font speech '+font);await click('[data-action="event-background"]');await layout('font brief '+font);await click('[data-action="event-choices"]');await layout('font choices '+font);await click('[data-action="select-option"][data-option="investigate"]');await layout('font confirmation '+font);await close();
+  }
+ }
+ await send('Emulation.setDeviceMetricsOverride',{width:320,height:568,deviceScaleFactor:1,mobile:true});await wait(150);
+ for(const c of COUNTRIES){await click('[data-action="tab"][data-tab="world"]');await click('[data-action="roster"]');await click(`[data-action="country"][data-id="${c.id}"]`);for(const section of ['diplomacy','profile','vote']){await click(`[data-action="country-section"][data-section="${section}"]`);await layout('extra country '+c.id+' '+section);}await close();}
+ for(const e of EVENTS.filter(e=>e.random)){
+  const fixture=createGame(1001);fixture.randomEvents.pending=[{id:e.id,turn:1,deadline:3,roll:.2,cause:e.id.startsWith('FUP')?'此前联络安排':''}];fixture.randomEvents.seen=[e.id];await loadState(fixture);
+  await openEvent(e.id);await layout('extra random speech '+e.id);await click('[data-action="event-background"]');await layout('extra random brief '+e.id);await click('[data-action="event-choices"]');await layout('extra random options '+e.id);if(e.id==='RND-01')await screenshot('options-extra-320');
+  for(const o of e.options){await click(`[data-action="select-option"][data-option="${o.id}"]`);await layout('extra random confirm '+o.id);await click('[data-action="event-choices"]');}await close();
+ }
+ await loadState(createGame(1001));await click('[data-action="tab"][data-tab="committee"]');await click('[data-action="archive"]');await layout('extra archive');await click('[data-action="new"]');await layout('extra new mandate');await close();await settings();await click('[data-action="help"]');await layout('extra guide');await close();await settings();
+ await evaluate(`window.__gains=[];const originalRamp=AudioParam.prototype.linearRampToValueAtTime;AudioParam.prototype.linearRampToValueAtTime=function(v,t){window.__gains.push(v);return originalRamp.call(this,v,t)};window.__vibrations=[];Object.defineProperty(navigator,'vibrate',{configurable:true,value:n=>{window.__vibrations.push(n);return true}});`);
+ await click('[data-action="settings"][data-section="preferences"]');
+ await evaluate(`document.querySelector('#settings-volume').value='80';document.querySelector('#settings-volume').dispatchEvent(new Event('input',{bubbles:true}));window.__gains=[]`);await click('[data-action="preview-sound"]');await wait(100);assert(await evaluate(`window.__gains.some(v=>Math.abs(v-.06)<.001)`),'Volume reaches audio gain');
+ await click('[data-action="mute"]');await evaluate('window.__gains=[]');await click('[data-action="preview-sound"]');await wait(100);assert(await evaluate('window.__gains.length===0'),'Muted playback creates no tone');
+ await evaluate(`document.querySelector('#settings-volume').value='0';document.querySelector('#settings-volume').dispatchEvent(new Event('input',{bubbles:true}));window.__gains=[]`);await click('[data-action="preview-sound"]');await wait(60);assert(await evaluate('window.__gains.length===0'),'Zero volume silent');
+ await click('#settings-press');assert(await evaluate(`document.documentElement.dataset.press==='off'`),'Press feedback toggle');
+ await click('#settings-vibration');await click('[data-action="settings"][data-section="preferences"]');assert(await evaluate('window.__vibrations.includes(12)'),'Vibration request on key press');
+ await send('Page.reload');await wait(650);assert(await evaluate(`document.documentElement.dataset.font==='extra'&&document.documentElement.dataset.press==='off'&&JSON.parse(localStorage.getItem('peace-committee-preferences-v1')).volume===0`),'Preferences persist');await click('[data-action="resume"]');
+ await settings('slots');await click('[data-action="slot-save"]');await layout('populated slot');await screenshot('slots-320');assert(await evaluate(`JSON.parse(localStorage.getItem('peace-committee-slot-1-v1')).state.seed===1001`),'Manual save persisted');
+ await click('[data-action="slot-save"]');await layout('overwrite confirmation');await click('[data-action="settings"][data-section="slots"]');assert(await evaluate(`JSON.parse(localStorage.getItem('peace-committee-slot-1-v1')).state.seed===1001`),'Overwrite cancelled');
+ await close();await click('[data-action="tab"][data-tab="world"]');await click('[data-action="roster"]');await click('[data-action="country"][data-id="LAN"]');await click('[data-action="diplomacy"][data-mode="talk"]');await close();const changed=await saved();assert(changed.ap===2,'Progress after save');
+ await settings('slots');await click('[data-action="slot-load"]');await layout('restore confirmation');await close();assert((await saved()).ap===2,'Cancelled restore keeps progress');
+ await settings('slots');await click('[data-action="slot-load"]');await click('[data-action="confirm-import"]');assert((await saved()).ap===3,'Restore manual point');assert(await evaluate(`JSON.parse(localStorage.getItem('peace-committee-slot-backup-v1')).state.ap===2`),'Preload backup retained');
+ await settings('slots','backup');await click('[data-action="slot-load"]');await click('[data-action="confirm-import"]');assert((await saved()).ap===2,'Read backup returns progress');
+ await settings('slots','2');await click('[data-action="slot-save"]');await click('[data-action="settings"][data-section="slots"][data-slot="3"]');await click('[data-action="slot-save"]');assert(await evaluate(`['1','2','3'].every(id=>localStorage.getItem('peace-committee-slot-'+id+'-v1'))`),'Three independent slots');
+ await evaluate(`window.__exportBlob=null;const createURL=URL.createObjectURL.bind(URL);URL.createObjectURL=b=>{window.__exportBlob=b;return createURL(b)};document.addEventListener('click',e=>{if(e.target.matches('a[download]'))e.preventDefault()});`);await click('[data-action="export"]');const exported=await evaluate('window.__exportBlob.text()');assert(JSON.parse(exported).ap===2,'Export contains current state');
+ const importFile=async text=>{await evaluate(`(()=>{const input=document.querySelector('#import-save'),dt=new DataTransfer();dt.items.add(new File([${JSON.stringify(text)}],'test-save.json',{type:'application/json'}));input.files=dt.files;input.dispatchEvent(new Event('change',{bubbles:true}));})()`);await wait(100);};
+ await importFile('{broken');assert(await evaluate(`document.querySelector('#dialog-title').textContent==='无法恢复这份档案'`),'Bad file rejected');assert((await saved()).ap===2,'Bad file retains progress');await close();await importFile(JSON.stringify(createGame(1002)));await click('[data-action="confirm-import"]');assert((await saved()).seed===1002,'File import restored');
+ await settings('slots','2');await evaluate(`window.__originalSet=Storage.prototype.setItem;Storage.prototype.setItem=function(k,v){if(k.includes('slot-2'))throw Error('测试：存储空间不足');return window.__originalSet.call(this,k,v)}`);await click('[data-action="slot-save"]');await click('[data-action="confirm-slot-save"]');assert(await evaluate(`document.querySelector('#dialog').textContent.includes('存储空间不足')`),'Storage failure visible');assert(await evaluate(`JSON.parse(localStorage.getItem('peace-committee-slot-2-v1')).state.seed===1001`),'Failed save retains old slot');await evaluate('Storage.prototype.setItem=window.__originalSet');await close();
+ await settings();await click('[data-action="exit"]');await layout('exit confirmation');await click('[data-action="confirm-exit"]');await layout('title screen');await screenshot('title-320');assert(await evaluate(`!!document.querySelector('.title-screen')`),'Exit returns title');await send('Page.reload');await wait(600);assert(await evaluate(`!!document.querySelector('.title-screen')`),'Exit state survives reload');await click('[data-action="resume"]');assert((await saved()).seed===1002,'Resume preserves world');
+ await settings();await click('[data-action="font-size"][data-font="normal"]');await close();await loadState(createGame(1001));
+ return {fonts:3,viewports:4,manualSlots:3,backupRestore:true,importExport:true,exitResume:true,audioGain:true,mute:true,pressFeedback:true,vibrationRequest:true,quotaFailure:true};
+}

@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">世界和平委员会</string>
+    <style name="GameTheme" parent="android:style/Theme.Material.NoActionBar">
+        <item name="android:fontFamily">sans</item>
+        <item name="android:windowLightStatusBar">false</item>
+        <item name="android:windowLightNavigationBar">false</item>
+        <item name="android:colorAccent">#D8B97A</item>
+        <item name="android:windowBackground">#142435</item>
+        <item name="android:statusBarColor">#142435</item>
+        <item name="android:navigationBarColor">#142435</item>
+        <item name="android:windowLayoutInDisplayCutoutMode">never</item>
+    </style>
+</resources>

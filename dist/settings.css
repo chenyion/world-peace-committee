@@ -1,0 +1,119 @@
+:root{--font-scale:1}
+.title-chapter{display:inline-block;margin-top:12px;padding:4px 12px;border-block:1px solid #c8a66944;color:#d5bd88;font-size:calc(12px * var(--font-scale,1));letter-spacing:2px}
+.title-screen .title-actions .btn:disabled{opacity:.45}
+@media(max-height:630px){.title-chapter{margin-top:8px;padding:3px 9px;font-size:calc(10px * var(--font-scale,1))}.title-screen{gap:14px!important}}
+/* The preceding speech screen already presents this quotation in full. */
+html:not([data-font="normal"]) .event-brief .speaker-block blockquote{display:none}
+dialog{max-width:min(440px,calc(100vw - 20px))}
+@media(max-height:630px){dialog{max-width:min(420px,calc(100vw - 16px))}}
+@media(max-height:760px){html[data-font="extra"] .country-dialog .modal-body{gap:7px}}
+@media(max-height:760px){
+ html:not([data-font="normal"]) .committee-screen{grid-template-rows:auto minmax(60px,.8fr) minmax(120px,1.2fr) minmax(48px,.6fr) auto}
+ html:not([data-font="normal"]) .office-card{grid-template-columns:20px 1fr auto;grid-template-rows:auto auto;gap:2px 5px;padding:7px 9px}
+ html:not([data-font="normal"]) .office-card>.icon{grid-column:1;grid-row:1;margin:0;width:16px}
+ html:not([data-font="normal"]) .office-card b{grid-column:3;grid-row:1}
+ html:not([data-font="normal"]) .office-card strong{grid-column:2;grid-row:1}
+ html:not([data-font="normal"]) .office-card small{grid-column:1/-1;grid-row:2;margin-top:3px}
+}
+@media(max-height:760px){html[data-font="extra"] .country-dialog .profile-facts small{line-height:1.2;margin-bottom:2px}html[data-font="extra"] .country-dialog .profile-facts{gap:8px}}
+@media(max-height:760px){.slot-card>small:first-child{display:none}.slot-card h3{line-height:1.3;margin:4px 0 7px}.slot-card p{line-height:1.5}}
+.settings-guide{position:absolute;top:13px;right:53px;min-height:32px;width:32px;padding:0;border:1px solid #cdb98e55;color:#cdb98e;background:none;border-radius:50%;font-size:16px}
+.settings-dialog .modal-head{padding-right:66px}
+html[data-font="large"]{--font-scale:1.1}
+html[data-font="extra"]{--font-scale:1.2}
+html[data-press="on"] button:active:not(:disabled){filter:brightness(1.2);box-shadow:inset 0 0 0 2px #f5dba555}
+.topbar>.icon-btn[data-action="settings"]{width:40px;height:40px;min-width:40px}
+.settings-dialog{gap:12px}
+.settings-dialog .modal-head h2{font-size:calc(24px * var(--font-scale,1))}
+.settings-dialog .modal-body{display:grid;grid-template-rows:44px minmax(0,1fr);gap:12px}
+.settings-tabs button{flex:1;font-size:calc(14px * var(--font-scale,1));min-height:36px}
+.settings-content{display:flex;flex-direction:column;gap:12px;min-height:0}
+.setting-block{border:1px solid #c9aa7440;background:#0d1e2c66;border-radius:6px;padding:12px}
+.setting-label{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:9px;font-size:calc(14px * var(--font-scale,1))}
+.setting-label>span,.setting-label>output{font-size:calc(12px * var(--font-scale,1));color:#ddc48c;white-space:nowrap}
+.font-picker button{flex:1;min-height:38px;font-size:calc(14px * var(--font-scale,1))}
+.font-sample{font-size:calc(15px * var(--font-scale,1));color:#ddd7c7;margin-top:9px;line-height:1.5}
+.setting-block input[type="range"]{display:block;width:100%;height:30px;accent-color:#e2bd7c;touch-action:pan-x;cursor:pointer;margin:0 0 5px}
+.sound-buttons,.slot-actions{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.sound-buttons .btn,.slot-actions .btn{min-width:0;font-size:calc(13px * var(--font-scale,1));min-height:42px;padding:8px}
+.feedback-options{padding-block:3px}
+.feedback-options label{display:flex;align-items:center;justify-content:space-between;gap:10px;min-height:45px;font-size:calc(14px * var(--font-scale,1));cursor:pointer}
+.feedback-options label+label{border-top:1px solid #d6b77d20}
+.feedback-options small{display:block;font-size:calc(10px * var(--font-scale,1));line-height:1.4;color:#9eafba}
+.feedback-options input{appearance:none;width:38px;height:23px;flex-shrink:0;border-radius:20px;background:#1b2936;border:1px solid #ae997760;cursor:pointer;position:relative}
+.feedback-options input:before{content:"";position:absolute;left:3px;top:3px;width:15px;height:15px;background:#a8b3b6;border-radius:50%;transition:transform .15s}
+.feedback-options input:checked{background:#ad8c4f}.feedback-options input:checked:before{background:#ffedc5;transform:translateX(15px)}.feedback-options input:disabled{opacity:.45;cursor:not-allowed}
+.settings-status{font-size:calc(12px * var(--font-scale,1));line-height:1.5;color:#b5c5c8;min-height:18px}
+.settings-help{align-self:flex-start;font-size:calc(13px * var(--font-scale,1));min-height:38px;padding:6px 12px;margin-top:auto}
+.settings-dialog .modal-foot .btn{font-size:calc(14px * var(--font-scale,1));min-height:44px}
+.settings-dialog .modal-foot{padding-top:10px;min-height:55px}
+.slot-picker{gap:1px;padding:2px}
+.slot-picker button{flex:1;min-width:0;min-height:40px;padding:5px 1px;font-size:calc(12px * var(--font-scale,1))}
+.slot-card{border:1px solid #c8a96d70;border-radius:6px;background:linear-gradient(110deg,#f0e7d2,#daceb4);padding:20px 15px;color:#30454b}
+.slot-card>small{font-size:calc(12px * var(--font-scale,1));color:#796647;display:block;line-height:1.5}
+.slot-card h3{font-family:var(--serif);font-size:calc(23px * var(--font-scale,1));font-weight:700;margin:8px 0}
+.slot-card p{font-size:calc(13px * var(--font-scale,1));line-height:1.65;margin-bottom:12px}
+.settings-hint{font-size:calc(11px * var(--font-scale,1));line-height:1.6;color:#9daeb9}
+.slots-content>.slot-actions:first-of-type{margin-top:0}
+.exit-dialog .guide-art{font-size:calc(38px * var(--font-scale,1));color:var(--accent)}
+.title-screen{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:30px 24px;gap:26px;text-align:center}
+.title-emblem img{width:90px;height:90px;filter:drop-shadow(0 5px 15px #0006)}
+.title-heading small{font-size:calc(9px * var(--font-scale,1));letter-spacing:2px;color:#cdb17b}
+.title-heading h1{font-family:var(--serif);font-size:calc(27px * var(--font-scale,1));letter-spacing:2px;color:#f3e5c6;margin:10px 0}
+.title-heading p{font-size:calc(13px * var(--font-scale,1));color:#b2bfc7}
+.title-actions{width:100%;max-width:290px;display:flex;flex-direction:column;gap:10px}
+.title-actions .btn{min-height:48px;font-size:calc(16px * var(--font-scale,1))}
+.title-status{font-size:calc(12px * var(--font-scale,1));line-height:1.8;color:#9cafb9}
+html:not([data-font="normal"]) .speech-copy{padding:8px 10px}
+html:not([data-font="normal"]) .profile-facts{gap:10px}
+html:not([data-font="normal"]) .country-dialog .modal-body{gap:10px}
+html:not([data-font="normal"]) .country-dialog .country-profile>.portrait{width:44px}
+html:not([data-font="normal"]) .country-dialog .diplomacy-action{padding:8px;gap:6px}
+html:not([data-font="normal"]) .country-dialog .country-profile strong{font-size:calc(20px * var(--font-scale,1))}
+@media(max-height:760px){
+ .settings-content{gap:9px}.setting-block{padding:9px}.feedback-options{padding-block:1px}
+ .settings-dialog .modal-body{gap:10px}.setting-label{margin-bottom:6px}
+ .font-sample{margin-top:6px}.slot-card{padding:14px}
+ .settings-help{min-height:34px}.settings-dialog .modal-head h2{font-size:calc(22px * var(--font-scale,1))}
+}
+@media(max-height:760px){
+ .topbar>.icon-btn[data-action="settings"]{width:32px;height:32px;min-width:32px}
+ .settings-dialog{gap:9px}.settings-dialog .modal-body{grid-template-rows:40px minmax(0,1fr);gap:8px}
+ .settings-tabs button{font-size:calc(13px * var(--font-scale,1));min-height:32px;padding:3px}
+ .settings-content{gap:7px}.setting-label{font-size:calc(13px * var(--font-scale,1));margin-bottom:4px}
+ .setting-block{padding:7px 9px}.font-picker button{font-size:calc(13px * var(--font-scale,1));min-height:32px}
+ .font-sample{font-size:calc(13px * var(--font-scale,1));margin-top:5px}
+ .setting-block input[type="range"]{height:25px;margin-bottom:2px}
+ .sound-buttons .btn,.slot-actions .btn{font-size:calc(12px * var(--font-scale,1));min-height:37px;padding:6px}
+ .feedback-options{padding-block:0}.feedback-options label{font-size:calc(13px * var(--font-scale,1));min-height:38px}
+ .feedback-options small{font-size:calc(9px * var(--font-scale,1))}.settings-status{font-size:calc(11px * var(--font-scale,1));min-height:16px}
+ .settings-help{font-size:calc(12px * var(--font-scale,1));min-height:32px;padding:4px 10px}
+ .settings-dialog .modal-foot .btn{font-size:calc(13px * var(--font-scale,1))}
+ .slot-card{padding:12px}.slot-card h3{font-size:calc(20px * var(--font-scale,1));margin:6px 0}.slot-card p{margin-bottom:8px}
+ .slot-picker button{font-size:calc(11px * var(--font-scale,1));min-height:36px}
+ .title-screen{padding:20px;gap:18px}.title-emblem img{width:65px;height:65px}
+ .title-heading h1{font-size:calc(22px * var(--font-scale,1))}.title-actions .btn{min-height:42px;font-size:calc(14px * var(--font-scale,1))}
+ .title-actions{gap:8px}.title-status{font-size:calc(11px * var(--font-scale,1))}
+ html:not([data-font="normal"]) .modal-shell{gap:9px}
+ html:not([data-font="normal"]) .modal-body{gap:9px}
+ html:not([data-font="normal"]) .country-dialog .country-profile{gap:8px}
+ html:not([data-font="normal"]) .country-dialog .country-profile strong{font-size:calc(18px * var(--font-scale,1))}
+ html:not([data-font="normal"]) .country-dialog .diplomacy-action{min-height:64px}
+ html:not([data-font="normal"]) .country-dialog .diplomacy-action>span{max-width:80px}
+ html:not([data-font="normal"]) .country-dialog .diplomacy-action small{margin-top:3px}
+ html:not([data-font="normal"]) .country-dialog .profile-facts p{line-height:1.5}
+ html:not([data-font="normal"]) .guide-art{width:54px;height:54px;margin:4px auto}
+ html:not([data-font="normal"]) .info-note{padding:8px;line-height:1.6}
+ html:not([data-font="normal"]) .option-summary{padding:8px;gap:6px}
+ html:not([data-font="normal"]) .option-summary small{margin-top:3px}
+ html:not([data-font="normal"]) .speech-topics .btn{padding:5px 2px}
+ html:not([data-font="normal"]) .speech-dialog .modal-foot .btn{padding:7px}
+}
+
+@media(max-height:760px){
+ html[data-font="extra"] .settings-content{gap:5px}
+ html[data-font="extra"] .setting-label{line-height:1.25}
+ html[data-font="extra"] .settings-dialog .modal-body{gap:6px}
+ html[data-font="extra"] .setting-block input[type="range"]{height:22px}
+ html[data-font="extra"] .feedback-options label{line-height:1.35}
+}
